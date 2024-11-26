@@ -97,6 +97,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
+    - name: Debug Files
+      run: ls -la
+
     - name: Upload ZAP Scan Report
       uses: actions/upload-artifact@v3
       with:
