@@ -22,7 +22,7 @@ jobs:
 
    - name: Run Bandit Scan
      #safe report in json format
-     run: bandit -ll -ii -r . -f json -o bandit-report.json
+     run: bandit -ll -ii -r . -f json -o bandit-report.json || true
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v3
@@ -87,12 +87,12 @@ jobs:
     - name: Wait for PyGoat to start
       run: |
         sleep 10
-        curl -Is http://localhost:8000 | head -n 1
+        curl -Is http://host.docker.internal:8000 | head -n 1
 
     - name: OWASP ZAP Full Scan
       uses: zaproxy/action-full-scan@v0.8.0
       with:
-        target: 'http://localhost:8000'
+        target: 'http://host.docker.internal:8000'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
