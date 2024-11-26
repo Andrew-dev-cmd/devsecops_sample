@@ -107,4 +107,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ZAP-Full-Scan-Report
-        path: zap_scan_report.html
+        path: /home/runner/work/devsecops_sample/devsecops_sample/zap_scan_report.html
