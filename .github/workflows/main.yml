@@ -100,6 +100,9 @@ jobs:
     - name: Debug Files
       run: ls -la
 
+    - name: Check directory
+      run: pwd
+
     - name: Upload ZAP Scan Report
       uses: actions/upload-artifact@v3
       with:
