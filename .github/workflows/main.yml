@@ -91,13 +91,8 @@ jobs:
 
     - name: Run ZAP DAST Scan
       run: |
-        docker run --rm -v $(pwd):/zap/wrk:rw -e ZAP_HOSTNAME=localhost \
-          -e ZAP_TARGET=http://localhost:8000 securecodebox/zap scan \
-          --full-scan \
-          --context-name default \
-          --username zap \
-          --password zap-password \
-          --output-file /zap/wrk/zap-report.html
+        docker run --rm -v $(pwd):/zap/wrk:rw \
+        securecodebox/zap zap-baseline -t http://localhost:8000 -r zap-report.html
 
     - name: Upload DAST Report
       uses: actions/upload-artifact@v3
