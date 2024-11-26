@@ -89,13 +89,15 @@ jobs:
         sleep 10
         curl -Is http://localhost:8000 | head -n 1
 
-    - name: Run ZAP DAST Scan
-      run: |
-        docker run --rm -v $(pwd):/zap/wrk:rw \
-        securecodebox/zap zap-advanced-scan -t http://localhost:8000 -r zap-report.html
+    - name: OWASP ZAP Full Scan
+      uses: zaproxy/action-full-scan@v0.8.0
+      with:
+        target: 'http://localhost:8000'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload DAST Report
+    - name: Upload ZAP Scan Report
       uses: actions/upload-artifact@v3
       with:
-        name: DAST-Report
-        path: dast-report.html
+        name: ZAP-Full-Scan-Report
+        path: zap_scan_report.html
