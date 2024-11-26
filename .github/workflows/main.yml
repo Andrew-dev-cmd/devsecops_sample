@@ -92,7 +92,7 @@ jobs:
     - name: Run ZAP DAST Scan
       run: |
         docker run --rm -v $(pwd):/zap/wrk:rw \
-        securecodebox/zap zap-baseline -t http://localhost:8000 -r zap-report.html
+        securecodebox/zap zap-advanced-scan -t http://localhost:8000 -r zap-report.html
 
     - name: Upload DAST Report
       uses: actions/upload-artifact@v3
