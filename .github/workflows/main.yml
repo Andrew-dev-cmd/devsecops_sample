@@ -67,3 +67,40 @@ jobs:
      with:
        name: docker-scout-findings
        path: scout-report.sarif
+       
+ dast_scan:
+    name: Build and Deploy PyGoat with DAST Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Build PyGoat Docker Image
+      run: |
+        docker build -t my-pygoat-app .
+
+    - name: Deploy PyGoat
+      run: |
+        docker run --rm -d -p 8000:8000 my-pygoat-app
+
+    - name: Wait for PyGoat to start
+      run: |
+        sleep 10
+        curl -Is http://localhost:8000 | head -n 1
+
+    - name: Run ZAP DAST Scan
+      run: |
+        docker run --rm -v $(pwd):/zap/wrk:rw -e ZAP_HOSTNAME=localhost \
+          -e ZAP_TARGET=http://localhost:8000 securecodebox/zap scan \
+          --full-scan \
+          --context-name default \
+          --username zap \
+          --password zap-password \
+          --output-file /zap/wrk/zap-report.html
+
+    - name: Upload DAST Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: DAST-Report
+        path: dast-report.html
